@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router';
 import SidebarLayout from './SidebarLayout';
 import { Volume2, Home, Bot, BarChart3, Users, FileText, LogOut } from 'lucide-react';
+import { Toaster } from './ui/sonner';
 
 const sidebarItems = [
   { icon: Volume2, label: 'Audio Evaluation', href: '/audio-evaluation' },
@@ -19,6 +20,7 @@ export const Layout = () => {
       sidebarItems={sidebarItems}
     >
       <Outlet />
+      <Toaster />
     </SidebarLayout>
   );
 };

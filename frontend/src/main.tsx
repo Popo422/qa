@@ -4,6 +4,8 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router";
+import { Provider } from "react-redux";
+import { store } from "./store";
 import "./index.css"
 import HomePage from "./pages/home/home.tsx";
 import LoginPage from "./pages/login/login.tsx";
@@ -22,6 +24,14 @@ import { Layout } from "./components/Layout.tsx";
 
 const router = createBrowserRouter([
   {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/register", 
+    element: <RegisterPage />,
+  },
+  {
     element: <Layout />,
     children: [
       {
@@ -31,14 +41,6 @@ const router = createBrowserRouter([
       {
         path: "/home",
         element: <HomePage />,
-      },
-      {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/register",
-        element: <RegisterPage />,
       },
       {
         path: "/dashboard",
@@ -90,6 +92,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </StrictMode>
 )

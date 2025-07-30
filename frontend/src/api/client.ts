@@ -11,8 +11,8 @@ export async function apiFetch(
   options: RequestInit,
   responseSchema: z.ZodSchema
 ): Promise<APIResponse<z.infer<typeof responseSchema>>> {
-  let apiBaseUrl = import.meta.env.VITE_API_URL;
-  let apiBasePath = import.meta.env.VITE_API_BASE_PATH;
+  const apiBaseUrl = import.meta.env.VITE_API_URL;
+  const apiBasePath = import.meta.env.VITE_API_BASE_PATH;
   if (!apiBaseUrl || !apiBasePath) {
     throw new Error("API configuration environment variables are missing");
   }
