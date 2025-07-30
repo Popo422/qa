@@ -1,19 +1,22 @@
 import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
-import { Trash2, FileText, FileSpreadsheet } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { Trash2, FileText, FileSpreadsheet, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import * as XLSX from 'xlsx'
 import { RubricData } from '../rubrics'
 
 interface UploadRubricTabProps {
-  onShowPreview: (data: RubricData[]) => void
   uploadedFiles: File[]
   setUploadedFiles: (files: File[]) => void
+  rubricData: RubricData[]
+  setRubricData: (data: RubricData[]) => void
 }
 
-export default function UploadRubricTab({ onShowPreview, uploadedFiles, setUploadedFiles }: UploadRubricTabProps) {
+export default function UploadRubricTab({ uploadedFiles, setUploadedFiles, rubricData, setRubricData }: UploadRubricTabProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isDragOver, setIsDragOver] = useState(false)
+  const [showPreview, setShowPreview] = useState(false)
 
   const handleFileSelect = () => {
     fileInputRef.current?.click()
@@ -72,7 +75,8 @@ export default function UploadRubricTab({ onShowPreview, uploadedFiles, setUploa
       { idNo: '5', qaCategory: 'Knowledge', criteria: 'Product knowledge', explanation: 'Demonstrates expertise', sampleScript: 'Based on our policy', score: '92' },
     ]
     
-    onShowPreview(mockRubricData)
+    setRubricData(mockRubricData)
+    setShowPreview(true)
   }
 
   const downloadSampleRubric = () => {
@@ -138,6 +142,96 @@ export default function UploadRubricTab({ onShowPreview, uploadedFiles, setUploa
     const sizes = ['Bytes', 'KB', 'MB', 'GB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  }
+
+  const handleCellChange = (index: number, field: keyof RubricData, value: string) => {
+    const updatedData = [...rubricData]
+    updatedData[index] = { ...updatedData[index], [field]: value }
+    setRubricData(updatedData)
+  }
+
+  const handleSave = () => {
+    toast.success('Rubric saved successfully!')
+    setShowPreview(false)
+  }
+
+  const handleBackToUpload = () => {
+    setShowPreview(false)
+  }
+
+  // If showing preview, render the preview screen
+  if (showPreview) {
+    return (
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">Preview Rubric</h2>
+            <p className="text-sm text-gray-500 mt-1">Rubric.xlsx</p>
+          </div>
+          <Button
+            variant="outline"
+            onClick={handleBackToUpload}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Upload
+          </Button>
+        </div>
+
+        {/* Editable Table */}
+        <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-50 border-b">
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-r">ID No.</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-r">QA Category</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-r">Criteria</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-r">Explanation</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-r">Sample Script</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rubricData.map((row, index) => (
+                  <tr key={index} className="border-b hover:bg-gray-50">
+                    <td className="px-4 py-3 border-r">
+                      <div className="text-sm text-gray-500">Table Cell</div>
+                    </td>
+                    <td className="px-4 py-3 border-r">
+                      <div className="text-sm text-gray-500">Table Cell</div>
+                    </td>
+                    <td className="px-4 py-3 border-r">
+                      <div className="text-sm text-gray-500">Table Cell</div>
+                    </td>
+                    <td className="px-4 py-3 border-r">
+                      <div className="text-sm text-gray-500">Table Cell</div>
+                    </td>
+                    <td className="px-4 py-3 border-r">
+                      <div className="text-sm text-gray-500">Table Cell</div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="text-sm text-gray-500">Table Cell</div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Save Button */}
+        <div className="flex justify-center">
+          <Button 
+            onClick={handleSave}
+            className="bg-red-500 hover:bg-red-600 px-8"
+          >
+            Save
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   return (

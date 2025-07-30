@@ -15,41 +15,13 @@ export interface RubricData {
 
 export default function RubricsPage() {
   const [activeTab, setActiveTab] = useState<'select' | 'upload'>('select')
-  const [showPreview, setShowPreview] = useState(false)
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
   const [rubricData, setRubricData] = useState<RubricData[]>([])
 
   const handleTabChange = (value: string) => {
-    if (showPreview && value === 'upload') {
-      // If we're in preview and switching to upload tab, just hide preview
-      setShowPreview(false)
-      return
-    }
     setActiveTab(value as 'select' | 'upload')
-    if (value === 'select') {
-      setShowPreview(false)
-    }
   }
 
-  const handleShowPreview = (data: RubricData[]) => {
-    setRubricData(data)
-    setShowPreview(true)
-  }
-
-  const handleBackToUpload = () => {
-    setShowPreview(false)
-  }
-
-  if (showPreview) {
-    return (
-      <PreviewRubricTab 
-        onBack={() => setActiveTab('select')} 
-        onBackToUpload={handleBackToUpload}
-        rubricData={rubricData}
-        onUpdateRubricData={setRubricData}
-      />
-    )
-  }
 
   return (
     <div className="animate-in fade-in-0 duration-500">
@@ -61,7 +33,7 @@ export default function RubricsPage() {
           </div>
         </div>
         
-        <Tabs value={showPreview ? 'upload' : activeTab} onValueChange={handleTabChange} className="w-full">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <TabsList className="grid w-full grid-cols-2 max-w-md">
             <TabsTrigger value="select">Select Rubric</TabsTrigger>
             <TabsTrigger value="upload">Upload Rubric</TabsTrigger>
@@ -73,9 +45,10 @@ export default function RubricsPage() {
           
           <TabsContent value="upload" className="mt-6">
             <UploadRubricTab 
-              onShowPreview={handleShowPreview}
               uploadedFiles={uploadedFiles}
               setUploadedFiles={setUploadedFiles}
+              rubricData={rubricData}
+              setRubricData={setRubricData}
             />
           </TabsContent>
         </Tabs>

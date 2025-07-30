@@ -24,45 +24,23 @@ export default function PreviewRubricTab({ onBack, onBackToUpload, rubricData, o
     onBack()
   }
 
-  const handleTabChange = (value: string) => {
-    if (value === 'select') {
-      onBack()
-    }
-  }
-
   return (
-    <div className="animate-in fade-in-0 duration-500">
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Rubrics</h1>
-            <p className="text-gray-600 mt-2">Select a scoring rubric to apply to your uploaded calls.</p>
-          </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold text-gray-900">Preview Rubric</h2>
+          <p className="text-sm text-gray-500 mt-1">Rubric.xlsx</p>
         </div>
-        
-        <Tabs value="upload" onValueChange={handleTabChange} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 max-w-md">
-            <TabsTrigger value="select">Select Rubric</TabsTrigger>
-            <TabsTrigger value="upload">Upload Rubric</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="upload" className="mt-6">
-            <div className="space-y-6">
-              {/* Header */}
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900">Preview Rubric</h2>
-                  <p className="text-sm text-gray-500 mt-1">Rubric.xlsx</p>
-                </div>
-                <Button
-                  variant="outline"
-                  onClick={onBackToUpload}
-                  className="flex items-center gap-2"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to Upload
-                </Button>
-              </div>
+        <Button
+          variant="outline"
+          onClick={onBackToUpload}
+          className="flex items-center gap-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Upload
+        </Button>
+      </div>
 
       {/* Editable Table */}
       <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
@@ -106,18 +84,14 @@ export default function PreviewRubricTab({ onBack, onBackToUpload, rubricData, o
         </div>
       </div>
 
-              {/* Save Button */}
-              <div className="flex justify-center">
-                <Button 
-                  onClick={handleSave}
-                  className="bg-red-500 hover:bg-red-600 px-8"
-                >
-                  Save
-                </Button>
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
+      {/* Save Button */}
+      <div className="flex justify-center">
+        <Button 
+          onClick={handleSave}
+          className="bg-red-500 hover:bg-red-600 px-8"
+        >
+          Save
+        </Button>
       </div>
     </div>
   )
