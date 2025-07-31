@@ -14,7 +14,6 @@ const sidebarItems = [
 export default function AgentRoot() {
   return (
     <SidebarLayout 
-      title="Agent Portal" 
       sidebarItems={sidebarItems}
     >
       <Outlet />

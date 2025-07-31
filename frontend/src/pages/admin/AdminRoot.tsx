@@ -14,7 +14,6 @@ const sidebarItems = [
 export default function AdminRoot() {
   return (
     <SidebarLayout 
-      title="Admin Panel" 
       sidebarItems={sidebarItems}
     >
       <Outlet />

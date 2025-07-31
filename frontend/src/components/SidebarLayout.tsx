@@ -1,3 +1,5 @@
+import { useNavigate, useLocation } from 'react-router';
+
 interface SidebarItem {
   icon: React.ComponentType<{ className?: string }>
   label: string
@@ -6,12 +8,13 @@ interface SidebarItem {
 
 interface SidebarLayoutProps {
   children: React.ReactNode
-  title: string
   sidebarItems: SidebarItem[]
 }
 
-export default function SidebarLayout({ children, title, sidebarItems }: SidebarLayoutProps) {
-  const currentPath = window.location.pathname;
+export default function SidebarLayout({ children, sidebarItems }: SidebarLayoutProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const Sidebar = ({ className = '' }: { className?: string }) => (
     <div className={`bg-white w-64 min-h-screen ${className}`}>
@@ -45,30 +48,29 @@ export default function SidebarLayout({ children, title, sidebarItems }: Sidebar
           }
           
           return (
-            <a
+            <button
               key={item.href}
-              href={item.href}
-              className={`flex items-center justify-end px-6 py-3 transition-colors relative ${
+              onClick={() => navigate(item.href)}
+              className={`flex items-center justify-end px-6 py-3 transition-colors relative w-full text-right ${
                 isActive 
-                  ? 'text-gray-600 sidebar-active' 
+                  ? 'text-gray-600' 
                   : 'text-gray-500 hover:bg-red-50 hover:text-gray-600'
               }`}
+              style={isActive ? {
+                position: 'relative',
+              } : {}}
             >
+              {isActive && (
+                <div 
+                  className="absolute top-0 left-0 h-full w-1/5 z-0"
+                  style={{
+                    background: 'linear-gradient(to right, rgba(216, 4, 12, 1) 0%, rgba(216, 4, 12, 0.2) 0%, transparent 100%, transparent 100%)',
+                    borderRadius: '0 8px 8px 0'
+                  }}
+                />
+              )}
               <span className="relative z-10">{item.label}</span>
-              <style jsx>{`
-                .sidebar-active::before {
-                  content: '';
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  width: 20%;
-                  height: 100%;
-                  background: linear-gradient(to right, rgba(216, 4, 12, 1) 0%, rgba(216, 4, 12, 0.2) 0%, transparent 100%, transparent 100%);
-                  border-radius: 0 8px 8px 0;
-                  z-index: 1;
-                }
-              `}</style>
-            </a>
+            </button>
           );
         })}
       </nav>

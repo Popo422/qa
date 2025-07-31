@@ -16,7 +16,6 @@ const sidebarItems = [
 export const Layout = () => {
   return (
     <SidebarLayout 
-      title="Dashboard" 
       sidebarItems={sidebarItems}
     >
       <Outlet />
