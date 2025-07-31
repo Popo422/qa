@@ -1,4 +1,12 @@
 {
   "name": "qa-tool",
-  "private": true
+  "private": true,
+   "workspaces": [
+    "frontend",
+    "common"
+  ],
+  "scripts": {
+    "build": "npm run --workspace=frontend build"
+  }
+  
 }
