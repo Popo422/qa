@@ -22,10 +22,10 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     
-    "paths": {
+  "paths": {
       "@/*": ["./src/*"],
-      "@common/*": ["../common/*"],
-    },
+      "@common/*": ["../common/*"]
+    }
   },
   "include": ["src"]
 }
